@@ -41,7 +41,8 @@ class HagureMetalDamaged
   listen_to :privmsg
   def listen(m)
     return unless m.message.include?($setting.irc.nick)
-    if @attackers.last != m.user.nick && @hp > 0
+    return if @hp <= 0
+    if @attackers.last != m.user.nick
       Channel($setting.irc.channels.first).notice "#{m.user.nick}のこうげき！　はぐれメタルに１のダメージ！"
       @hp -= 1
       @attackers << m.user.nick
