@@ -1,0 +1,13 @@
+irc:
+  server: your.irc.host
+  port: 6697
+  secure: true
+  ssl_use: true
+  user: haguremetal
+  nick: dq_hagure
+  realname: Your real name
+  password: YOURPASSWORD
+  channels:
+    - '#your_channel'
+timeout: 60
+average_interval: 14400
