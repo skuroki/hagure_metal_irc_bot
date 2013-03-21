@@ -8,7 +8,7 @@ require 'pony'
 require 'cinch'
 
 $setting = Hashie::Mash.new(YAML.load(ARGF))
-$levels = {}
+$levels = Hash.new(1)
 
 class HagureMetalAppeared
   include Cinch::Plugin
@@ -49,7 +49,7 @@ class HagureMetalDamaged
       if @hp <= 0
         Channel($setting.irc.channels.first).notice 'はぐれメタルをやっつけた！'
         @attackers.uniq.each do |attacker|
-          $levels[attacker] = $levels[attacker].to_i + 1
+          $levels[attacker] += 1
           Channel($setting.irc.channels.first).notice "#{attacker}のレベルが#{$levels[attacker]}にあがった！"
         end
         sleep(10)
