@@ -35,16 +35,24 @@ class HagureMetalDamaged
   def initialize(*args)
     @hp = 5
     @attackers = []
+    @last_attacked = Time.now
     super
+  end
+
+  def hit?
+    interval = Time.now - @last_attacked
+    hit_ratio = interval / 10.0
+    rand < hit_ratio
   end
 
   listen_to :privmsg
   def listen(m)
     return unless m.message.include?($setting.irc.nick)
     return if @hp <= 0
-    if @attackers.last != m.user.nick
+    if @attackers.last != m.user.nick && hit?
       Channel($setting.irc.channels.first).notice "#{m.user.nick}のこうげき！　はぐれメタルに１のダメージ！"
       @hp -= 1
+      @last_attacked = Time.now
       @attackers << m.user.nick
       if @hp <= 0
         Channel($setting.irc.channels.first).notice 'はぐれメタルをやっつけた！'
